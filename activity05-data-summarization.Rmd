@@ -25,7 +25,7 @@ We read in the same data from Activity 4 below, but notice that this code is now
 Compare this code output to the `load_data` chunk in your knitted Activity 4 `.md` report.
 What does enclosing an assignment code (i.e., `object_name <- r_code`) in parentheses do?
 
-**Response**:
+**Response**: 
 
 
 ### Data Codebook
@@ -79,6 +79,10 @@ There are a number of ways to create a code chunk:
 Below, create a code chunk and name it `median_earnings`.
 Make sure there is an empty line above and below the code chunk.
 
+```{r median_earnings}
+college_recent_grads %>% 
+summarize(median_all_majors = median(median))
+```
 
 
 In your newly created R code chunk, verify that the median income for all majors was $36,000.
@@ -95,12 +99,16 @@ Be careful when you name your output summaries as we are dealing with things tha
 When I and obtaining numerical summaries for variables, I like to include the variable name in my summary name (e.g., `mean_med_earnings = mean(median)`).
 Create a code chunk and name it `summary_earnings`.
 
+```{r summary_earnings}
+  college_recent_grads %>% 
+  summarize(n = n(), avg = mean(median), sd = sd(median), mini = min(median), med = median(median), maxi = max(median))
+```
 
 
 Provide a discussion on what you believe the distribution of median earnings will look like.
 You should discuss the center, spread, and potential shape only using these values - I do NOT want to see any data visualizations here.
 
-**Response**:
+**Response**: The distribution is fairly normal because the median and the average are similar. If there were more data points on one side, then the median would not be close to the average. The maximum is most likely an outlier and is skewing the data to the right.
 
 
 ### Median Earnings by Major Category
@@ -110,12 +118,22 @@ Using the `college_recent_grads` dataset and functions from `{dplyr}`, obtain si
 *Arrange* this summary table by the median earning.
 Create a code chunk and name it `major_earnings`.
 
-
+```{r major_earnings}
+college_recent_grads %>% 
+  group_by(major_category) %>% 
+    summarize(n = n(), 
+      avg = mean(median), 
+      sd = sd(median), 
+      mini = min(median), 
+      med = median(median), 
+      maxi = max(median)) %>% 
+  arrange(desc(med))
+```
 
 Provide a discussion on how each major compares to the overall distribution.
 You should discuss the center, spread, and potential shape only using these summary values - I do NOT want to see any data visualizations here.
 
-**Response**:
+**Response**: Engineering has the most range in their salary, minimum of 40,000 and maximum of 110,000. 
 
 
 Before we continue, add the following to the end of your pipeline (you will need to pipe first) in your `major_earnings` code chunk:
